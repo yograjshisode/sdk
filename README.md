@@ -33,7 +33,3 @@ as a dependency-free npm module.
 
 **[Swagger UI Dist](./swagger/README.md)**
 
-
-
-
-
