@@ -27,4 +27,15 @@ jobs:
       # Sets up python3
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.8 
+          python-version: 3.8
+
+      # Installs and upgrades pip, installs other dependencies and installs the package from setup.py
+      - name: "Installs and upgrades pip, installs other dependencies and installs the package from setup.py"
+        run: |
+          # Upgrade pip
+          python3 -m pip install --upgrade pip
+          # Install build deps
+          python3 -m pip install setuptools wheel twine
+          # If requirements.txt exists, install from it
+          cd python
+          ./create_sdk_pip_packages.sh sdk
