@@ -18,9 +18,9 @@ setup(
                                    ]),
     description='Avi python API SDK for Avi Controller REST API with samples'
                 ' and, utilities',
-    url='https://github.com/avinetworks/sdk',
-    author='Avi Networks',
-    author_email='avisdk@avinetworks.com',
+    url='https://github.com/yograjshisode/sdk',
+    author='Yograj Shisode',
+    author_email='yograjshisode@gmail.com',
     scripts=['avi/sdk/samples/virtualservice_examples_api.py'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
