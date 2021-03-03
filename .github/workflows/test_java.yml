@@ -36,3 +36,11 @@ jobs:
             JAVA_VERSION=$JAVA_VERSION.RELEASE
           fi
           echo "Java version: $JAVA_VERSION"
+          JAVA_VERSION="20.1.4-SNAPSHOT-1"
+          cd java
+          mvn versions:set -DnewVersion=$JAVA_VERSION
+          mvn clean deploy -DskipTests
+          env:
+            MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+            MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+            MAVEN_GPG_PASSPHRASE: ${{ secrets.AVISDK_PGP_PASSPHRASE }}
