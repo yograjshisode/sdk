@@ -15,8 +15,8 @@ jobs:
         with:
           java-version: 1.8
           server-id: ossrh
-          server-username: {{ secrets.OSSRH_USERNAME }}
-          server-password: {{ secrets.OSSRH_TOKEN }}
+          server-username: ${{ secrets.OSSRH_USERNAME }}
+          server-password: ${{ secrets.OSSRH_TOKEN }}
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
       - name: Get the version
