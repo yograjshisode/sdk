@@ -19,9 +19,9 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-     - name: Get the version
-       id: get_version
-       run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/} | cut -d - -f 2)
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/} | cut -d - -f 2)
       - name: Publish package
         run: |
           JAVA_VERSION=${{ steps.get_version.outputs.VERSION }}
@@ -36,7 +36,7 @@ jobs:
 	  #cd java
 	  #mvn versions:set -DnewVersion=$JAVA_VERSION
 	  #mvn clean deploy -DskipTests
-        #env:
-        #  MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-        #  MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-        #  MAVEN_GPG_PASSPHRASE: ${{ secrets.AVISDK_PGP_PASSPHRASE }}
+          #env:
+          #  MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          #  MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          #  MAVEN_GPG_PASSPHRASE: ${{ secrets.AVISDK_PGP_PASSPHRASE }}
