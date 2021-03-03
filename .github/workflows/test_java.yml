@@ -37,6 +37,6 @@ jobs:
           JAVA_VERSION="20.1.4-SNAPSHOT-1"
           cd java
           mvn versions:set -DnewVersion=$JAVA_VERSION
-          mvn --batch-mode deploy -DskipTests
+          mvn clean --batch-mode deploy -DskipTests -Dgpg.passphrase=${{ secrets.AVISDK_PGP_PASSPHRASE }}
           env:
             MAVEN_GPG_PASSPHRASE: ${{ secrets.AVISDK_PGP_PASSPHRASE }}
