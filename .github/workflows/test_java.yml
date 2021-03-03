@@ -1,0 +1,42 @@
+name: Publish package to the Maven Central Repository
+on:
+  #release:
+  #  types: [created]
+  push:
+    tags:
+      - 'tag*' 
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+     - name: Get the version
+       id: get_version
+       run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/} | cut -d - -f 2)
+      - name: Publish package
+        run: |
+          JAVA_VERSION=${{ steps.get_version.outputs.VERSION }}
+          if [[ "$JAVA_VERSION" == *"post"* ]]; then
+            JAVA_VERSION="${REL/post/\.}"
+          elif  [[ "$JAVA_VERSION" == *"b"* ]]; then
+            JAVA_VERSION="${REL/b/-beta-}"
+          else
+            JAVA_VERSION=$JAVA_VERSION.RELEASE
+          fi
+          echo "Java version: $JAVA_VERSION"
+	  #cd java
+	  #mvn versions:set -DnewVersion=$JAVA_VERSION
+	  #mvn clean deploy -DskipTests
+        #env:
+        #  MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        #  MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        #  MAVEN_GPG_PASSPHRASE: ${{ secrets.AVISDK_PGP_PASSPHRASE }}
