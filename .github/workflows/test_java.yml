@@ -26,10 +26,13 @@ jobs:
         run: |
           JAVA_VERSION=${{ steps.get_version.outputs.VERSION }}
           if [[ "$JAVA_VERSION" == *"post"* ]]; then
-            JAVA_VERSION="${REL/post/\.}"
+            echo "Java version post"
+            JAVA_VERSION="${JAVA_VERSION/post/\.}"
           elif  [[ "$JAVA_VERSION" == *"b"* ]]; then
-            JAVA_VERSION="${REL/b/-beta-}"
+            echo "Java version beta:"
+            JAVA_VERSION="${JAVA_VERSION/b/-beta-}"
           else
+            echo "Java version Release"
             JAVA_VERSION=$JAVA_VERSION.RELEASE
           fi
           echo "Java version: $JAVA_VERSION"
