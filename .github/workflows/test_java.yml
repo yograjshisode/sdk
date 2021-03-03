@@ -24,6 +24,7 @@ jobs:
         run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/} | cut -d - -f 2)
       - name: Publish package
         run: |
+          cat /home/runner/.m2/settings.xml
           JAVA_VERSION=${{ steps.get_version.outputs.VERSION }}
           if [[ "$JAVA_VERSION" == *"post"* ]]; then
             echo "Java version post"
@@ -38,7 +39,7 @@ jobs:
           echo "Java version: $JAVA_VERSION"
           JAVA_VERSION="20.1.4-SNAPSHOT"
           cd java
-          mvn versions:set -DnewVersion=$JAVA_VERSION
+          mvn versions:set -DnewVersion=$JAVA_VERSION 
           mvn clean --batch-mode deploy -DskipTests -Dgpg.passphrase=${{ secrets.AVISDK_PGP_PASSPHRASE }}
           env:
             MAVEN_GPG_PASSPHRASE: ${{ secrets.AVISDK_PGP_PASSPHRASE }}
