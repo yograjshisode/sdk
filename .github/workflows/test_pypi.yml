@@ -4,13 +4,15 @@ name: Test & Upload to TestPyPI
 
 # Controls when the action will run. 
 on:
+  release:
+    types: [created]
   # Triggers the workflow on push to the master branch
-  pull_request:
+  #pull_request:
   #push:
   #  tag: "*.*.*"
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  # workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,6 +34,7 @@ jobs:
       # Installs and upgrades pip, installs other dependencies and installs the package from setup.py
       - name: "Installs and upgrades pip, installs other dependencies and installs the package from setup.py"
         run: |
+          AVI_VERSION=`python ./python/version.py`
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install build deps
@@ -40,9 +43,29 @@ jobs:
           cd python
           ./create_sdk_pip_packages.sh sdk
           ./create_sdk_pip_packages.sh migrationtools
-          ./create_sdk_pypi.sh sdk
+          #./create_sdk_pypi.sh sdk
+          mv dist/avimigrationtools-$AVI_VERSION.tar.gz ../avimigrationtools-$AVI_VERSION.tar.gz
+          mv dist/avisdk-$AVI_VERSION.tar.gz ../avisdk-$AVI_VERSION.tar.gz
+          mv dist/python-avisdk_0_all.deb ../avisdk-$AVI_VERSION.deb
+          mv dist/avisdk-$AVI_VERSION-1.noarch.rpm ../avisdk-$AVI_VERSION.rpm
+          mv dist/avimigrationtools-$AVI_VERSION.tar.gz ../avimigrationtools-$AVI_VERSION.tar.gz
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
           TWINE_REPOSITORY: testpypi
+      - name: update release
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Avi API SDK pip package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          upload_url: ${{ steps.update_release.outputs.upload_url }}
+          asset_path: avisdk-$AVI_VERSION.tar.gz
+          asset_name: pip-package-avisdk-$AVI_VERSION
+          asset_content_type: application/gzip 
+
 
