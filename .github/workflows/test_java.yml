@@ -1,10 +1,11 @@
 name: Publish package to the Maven Central Repository
 on:
+  workflow_dispatch:
   #release:
   #  types: [created]
-  push:
-    tags:
-      - 'tag*' 
+  #push:
+  #  tags:
+  #    - 'tag*' 
 jobs:
   publish:
     runs-on: ubuntu-latest
