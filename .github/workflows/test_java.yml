@@ -25,7 +25,6 @@ jobs:
         run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/} | cut -d - -f 2)
       - name: Publish package
         run: |
-          cat /home/runner/.m2/settings.xml
           JAVA_VERSION=${{ steps.get_version.outputs.VERSION }}
           if [[ "$JAVA_VERSION" == *"post"* ]]; then
             echo "Java version post"
@@ -38,7 +37,13 @@ jobs:
             JAVA_VERSION=$JAVA_VERSION.RELEASE
           fi
           echo "Java version: $JAVA_VERSION"
-          JAVA_VERSION="20.1.4-SNAPSHOT"
-          cd java
-          mvn versions:set -DnewVersion=$JAVA_VERSION 
-          mvn clean --batch-mode deploy -DskipTests -Dgpg.passphrase=${{ secrets.AVISDK_PGP_PASSPHRASE }} -Denv.MAVEN_USERNAME=${{ secrets.OSSRH_USERNAME }} -Denv.MAVEN_PASSWORD=${{ secrets.OSSRH_TOKEN }}
+          echo ::set-output name=JAVA_VERSION::$(echo ${JAVA_VERSION})
+          #JAVA_VERSION="20.1.4-SNAPSHOT"
+          #cd java
+          #mvn versions:set -DnewVersion=$JAVA_VERSION 
+          #mvn clean --batch-mode deploy -DskipTests -Dgpg.passphrase=${{ secrets.AVISDK_PGP_PASSPHRASE }} -Denv.MAVEN_USERNAME=${{ secrets.OSSRH_USERNAME }} -Denv.MAVEN_PASSWORD=${{ secrets.OSSRH_TOKEN }}
+          
+          
+      - name: Test output
+        run: |
+          echo "Publish Java Version ${{ steps.get_version.outputs.JAVA_RELEASE_VERSION }}"
