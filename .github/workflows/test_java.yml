@@ -37,7 +37,7 @@ jobs:
             JAVA_VERSION=$JAVA_VERSION.RELEASE
           fi
           echo "Java version: $JAVA_VERSION"
-          echo ::set-output name=JAVA_VERSION::$(echo ${JAVA_VERSION})
+          echo '::set-output name=JAVA_VERSION::$(echo ${JAVA_VERSION})'
           #JAVA_VERSION="20.1.4-SNAPSHOT"
           #cd java
           #mvn versions:set -DnewVersion=$JAVA_VERSION 
@@ -47,3 +47,4 @@ jobs:
       - name: Test output
         run: |
           echo "Publish Java Version ${{ steps.get_version.outputs.JAVA_RELEASE_VERSION }}"
+          mvn versions:set -DnewVersion=${{ steps.get_version.outputs.JAVA_RELEASE_VERSION }}
