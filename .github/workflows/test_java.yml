@@ -1,8 +1,8 @@
 name: Publish package to the Maven Central Repository V2
 on:
-  workflow_dispatch:
-  #release:
-  #  types: [created]
+  #workflow_dispatch:
+  release:
+    types: [created]
   #push:
   #  tags:
   #    - 'tag*' 
