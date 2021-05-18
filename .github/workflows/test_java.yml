@@ -24,6 +24,7 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF##*/} | cut -d - -f 2)
       - name: Publish package
+        id: get_java_version
         run: |
           JAVA_VERSION=${{ steps.get_version.outputs.VERSION }}
           if [[ "$JAVA_VERSION" == *"post"* ]]; then
@@ -46,5 +47,5 @@ jobs:
           
       - name: Test output
         run: |
-          echo "Publish Java Version ${{ steps.get_version.outputs.JAVA_VERSION_RELEASE }}"
-          mvn versions:set -DnewVersion=${{ steps.get_version.outputs.JAVA_VERSION_RELEASE }}
+          echo "Publish Java Version ${{ steps.get_java_version.outputs.JAVA_VERSION_RELEASE }}"
+          mvn versions:set -DnewVersion=${{ steps.get_java_version.outputs.JAVA_VERSION_RELEASE }}
