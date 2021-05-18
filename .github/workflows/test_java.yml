@@ -43,7 +43,7 @@ jobs:
           #cd java
           #mvn versions:set -DnewVersion=$JAVA_VERSION 
           #mvn clean --batch-mode deploy -DskipTests -Dgpg.passphrase=${{ secrets.AVISDK_PGP_PASSPHRASE }} -Denv.MAVEN_USERNAME=${{ secrets.OSSRH_USERNAME }} -Denv.MAVEN_PASSWORD=${{ secrets.OSSRH_TOKEN }}
-        shell: bash
+        #shell: bash
           
       - name: Test output
         run: |
